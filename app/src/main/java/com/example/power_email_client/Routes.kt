@@ -7,5 +7,5 @@ sealed interface Routes {
     data object Emails
 
     @Serializable
-    data object EmailDetails
+    data class EmailDetails(val emailId: Long)
 }

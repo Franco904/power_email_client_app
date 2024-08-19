@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.power_email_client.core.presentation.theme.AppTheme
-import com.example.power_email_client.emailDetails.EmailDetailsScreen
-import com.example.power_email_client.emails.EmailsScreen
+import com.example.power_email_client.emailDetails.presentation.EmailDetailsScreen
+import com.example.power_email_client.emails.presentation.EmailsScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +31,9 @@ class MainActivity : ComponentActivity() {
 
     private fun NavGraphBuilder.routes(navController: NavController) {
         composable<Routes.Emails> {
-            EmailsScreen()
+            EmailsScreen { emailId ->
+                navController.navigate(Routes.EmailDetails(emailId))
+            }
         }
         composable<Routes.EmailDetails> {
             EmailDetailsScreen()
