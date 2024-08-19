@@ -115,7 +115,6 @@ object EmailsLocalProvider {
             id = 9L,
             sender = AccountsLocalProvider.findById(10L),
             recipients = listOf(AccountsLocalProvider.defaultAccount),
-            subject = "(No subject)",
             body = """
                 Hey,
         
@@ -150,4 +149,6 @@ object EmailsLocalProvider {
     )
 
     fun findAll() = allEmails
+
+    fun findById(id: Long) = allEmails.find { email -> email.id == id }
 }

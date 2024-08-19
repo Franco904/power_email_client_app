@@ -201,7 +201,7 @@ private fun EmailItem(
 @Composable
 private fun EmailItemBody(email: EmailUiState) {
     Text(
-        text = email.subject,
+        text = email.subject ?: stringResource(id = R.string.email_no_subject),
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurface,
         modifier = Modifier.padding(

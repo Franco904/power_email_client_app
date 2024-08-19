@@ -4,7 +4,7 @@ data class Email(
     val id: Long,
     val sender: Account,
     val recipients: List<Account> = emptyList(),
-    val subject: String,
+    val subject: String? = null,
     val body: String,
     val currentMailbox: MailboxType = MailboxType.Inbox,
     val createdAtTimestamp: Long,

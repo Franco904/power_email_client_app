@@ -19,4 +19,6 @@
     <string name="continue_composing">Continue Composing</string>
     <string name="delete">Delete</string>
     <string name="move_to_inbox">Move to Inbox</string>
+
+    <string name="email_no_subject">(No subject)</string>
 </resources>

@@ -15,7 +15,7 @@ class EmailsViewModel(
     emailsRepository: EmailsRepository = EmailsRepositoryImpl(),
 ) : ViewModel() {
     private val emailsByMailboxType: Map<MailboxType, List<EmailUiState>> = emailsRepository.findAll()
-        .map { it.toUiState() }
+        .map { EmailUiState.fromEmail(it) }
         .groupBy { it.currentMailbox }
 
     private val _currentEmails = MutableStateFlow<List<EmailUiState>>(emptyList())
@@ -24,22 +24,10 @@ class EmailsViewModel(
     private val _currentMailboxType = MutableStateFlow(MailboxType.Inbox)
     val currentMailboxType = _currentMailboxType.asStateFlow()
 
-    init {
+    fun init() {
         _currentEmails.update {
             emailsByMailboxType[currentMailboxType.value] ?: emptyList()
         }
-    }
-
-    private fun Email.toUiState(): EmailUiState {
-        return EmailUiState(
-            id = id,
-            senderPictureId = sender.pictureId,
-            senderFullName = sender.fullName,
-            createdAt = createdAtTimestamp.toPresentationText(),
-            subject = subject,
-            body = body,
-            currentMailbox = currentMailbox,
-        )
     }
 
     fun onBarItemSelected(tabMailboxType: MailboxType) {

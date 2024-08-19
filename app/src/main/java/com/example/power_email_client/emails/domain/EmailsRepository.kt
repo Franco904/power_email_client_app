@@ -4,4 +4,6 @@ import com.example.power_email_client.core.domain.models.Email
 
 interface EmailsRepository {
     fun findAll(): List<Email>
+
+    fun findById(id: Long): Email?
 }
