@@ -20,13 +20,13 @@ fun Timestamp.toPresentationText(): String {
     val yearsAgo = daysAgo / 365
 
     val time = when {
-        yearsAgo > 0 -> "$yearsAgo years"
-        monthsAgo > 0 -> "$monthsAgo months"
-        weeksAgo > 0 -> "$weeksAgo weeks"
-        daysAgo > 0 -> "$daysAgo days"
-        hoursAgo > 0 -> "$hoursAgo hours"
-        minsAgo > 0 -> "$minsAgo mins"
-        else -> "$secsAgo seconds"
+        yearsAgo > 0 -> if (yearsAgo > 1) "$yearsAgo years" else "1 year"
+        monthsAgo > 0 -> if (monthsAgo > 1) "$monthsAgo months" else "1 month"
+        weeksAgo > 0 -> if (weeksAgo > 1) "$weeksAgo weeks" else "1 week"
+        daysAgo > 0 -> if (daysAgo > 1) "$daysAgo days" else "1 day"
+        hoursAgo > 0 -> if (hoursAgo > 1) "$hoursAgo hours" else "1 hour"
+        minsAgo > 0 -> if (minsAgo > 1) "$minsAgo mins" else "1 min"
+        else -> if (secsAgo > 1) "$secsAgo seconds" else "1 second"
     }
 
     return "$time ago"

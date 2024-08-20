@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -204,6 +205,7 @@ private fun EmailItemBody(email: EmailUiState) {
         text = email.subject ?: stringResource(id = R.string.email_no_subject),
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurface,
+        fontStyle = if (email.subject == null) FontStyle.Italic else null,
         modifier = Modifier.padding(
             top = dimensionResource(R.dimen.email_list_item_header_subject_spacing),
             bottom = dimensionResource(R.dimen.email_list_item_subject_body_spacing),
