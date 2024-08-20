@@ -3,6 +3,9 @@ package com.example.power_email_client
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -36,7 +39,7 @@ class MainActivity : ComponentActivity() {
     private fun NavGraphBuilder.routes(navController: NavController) {
         composable<Routes.Emails> {
             EmailsScreen(
-                viewModel = viewModel<EmailsViewModel>().apply { init() },
+                viewModel = viewModel<EmailsViewModel>().alsoInvoke { init() },
                 onEmailSelected = { emailId ->
                     navController.navigate(Routes.EmailDetails(emailId))
                 }
@@ -46,9 +49,14 @@ class MainActivity : ComponentActivity() {
             val emailId = (backstackEntry.toRoute() as Routes.EmailDetails).emailId
 
             EmailDetailsScreen(
-                viewModel = viewModel<EmailDetailsViewModel>().apply { init(emailId) },
+                viewModel = viewModel<EmailDetailsViewModel>().alsoInvoke { init(emailId) },
                 onUpNavigation = navController::navigateUp,
             )
         }
+    }
+
+    @Composable
+    private fun <VM : ViewModel> VM.alsoInvoke(onViewModel: VM.() -> Unit) = also {
+        LaunchedEffect(Unit) { onViewModel() }
     }
 }
