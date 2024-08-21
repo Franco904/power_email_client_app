@@ -72,6 +72,8 @@ dependencies {
 
     // Material Design
     implementation(libs.androidx.material3)
+    //noinspection UseTomlInstead
+    implementation("androidx.compose.material3:material3-window-size-class")
     implementation(libs.androidx.material.icons.extended)
 
     // Navigation
@@ -82,6 +84,7 @@ dependencies {
 
     // Serialization
     implementation(libs.kotlin.serialization.json)
+//    implementation(libs.androidx.material3.window.size.class.android)
 
     // Local Tests
     testImplementation(libs.junit.api)
