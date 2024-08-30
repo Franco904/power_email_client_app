@@ -3,6 +3,7 @@ package com.example.power_email_client.emailDetails.presentation.models
 import androidx.annotation.DrawableRes
 import com.example.power_email_client.core.domain.models.Email
 import com.example.power_email_client.core.presentation.utils.toPresentationText
+import com.example.power_email_client.emails.presentation.models.EmailUiState
 
 data class EmailDetailsUiState(
     val id: Long,
@@ -20,6 +21,14 @@ data class EmailDetailsUiState(
             createdAt = email.createdAtTimestamp.toPresentationText(),
             subject = email.subject,
             body = email.body,
+        )
+
+        fun fromEmailUiState(emailUiState: EmailUiState) = EmailDetailsUiState(
+            id = emailUiState.id,
+            senderPictureId = emailUiState.senderPictureId,
+            senderFullName = emailUiState.senderFullName,
+            createdAt = emailUiState.createdAt,
+            body = emailUiState.body,
         )
     }
 }

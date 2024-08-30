@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.power_email_client.R
 import com.example.power_email_client.core.domain.models.MailboxType
 
-enum class NavigationBarItem(
+enum class NavigationItem(
     val mailboxType: MailboxType,
     val icon: ImageVector,
     @StringRes val text: Int,

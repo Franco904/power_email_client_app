@@ -1,9 +1,11 @@
 package com.example.power_email_client.emailDetails.presentation
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.MarkunreadMailbox
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,6 +34,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
@@ -55,6 +59,8 @@ fun EmailDetailsScreen(
     onUpNavigation: () -> Boolean = { true },
 ) {
     val email by viewModel.email.collectAsStateWithLifecycle()
+
+    BackHandler { onUpNavigation() }
 
     Scaffold(
         topBar = {
@@ -140,33 +146,48 @@ private fun TopAppBarNavigationIcon(onUpNavigation: () -> Boolean) {
 }
 
 @Composable
-private fun EmailDetailsCard(
+fun EmailDetailsCard(
     email: EmailDetailsUiState?,
     modifier: Modifier = Modifier,
 ) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         modifier = modifier
+            .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .background(MaterialTheme.colorScheme.onBackground)
             .verticalScroll(rememberScrollState())
     ) {
-        if (email == null) EmailNotFoundText() else EmailDetailsContent(email)
+        if (email == null) NoEmailSelectedContent() else EmailDetailsContent(email)
     }
 }
 
 @Composable
-private fun EmailNotFoundText() {
-    Text(
-        text = stringResource(R.string.no_email_found_try_opening_another_one),
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
+private fun NoEmailSelectedContent(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
             .padding(
                 top = 64.dp,
                 bottom = 64.dp,
             )
-    )
+    ) {
+        Icon(
+            imageVector = Icons.Default.MarkunreadMailbox,
+            contentDescription = stringResource(R.string.no_email_selected),
+            tint = MaterialTheme.colorScheme.outline,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = stringResource(R.string.no_email_selected),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+    }
 }
 
 @Composable

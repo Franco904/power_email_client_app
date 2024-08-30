@@ -1,9 +1,7 @@
 package com.example.power_email_client.emails.presentation
 
 import androidx.lifecycle.ViewModel
-import com.example.power_email_client.core.domain.models.Email
 import com.example.power_email_client.core.domain.models.MailboxType
-import com.example.power_email_client.core.presentation.utils.toPresentationText
 import com.example.power_email_client.emails.data.EmailsRepositoryImpl
 import com.example.power_email_client.emails.domain.EmailsRepository
 import com.example.power_email_client.emails.presentation.models.EmailUiState
@@ -30,7 +28,7 @@ class EmailsViewModel(
         }
     }
 
-    fun onBarItemSelected(tabMailboxType: MailboxType) {
+    fun onNavItemSelected(tabMailboxType: MailboxType) {
         _currentMailboxType.update { tabMailboxType }
         _currentEmails.update { emailsByMailboxType[tabMailboxType] ?: emptyList() }
     }
