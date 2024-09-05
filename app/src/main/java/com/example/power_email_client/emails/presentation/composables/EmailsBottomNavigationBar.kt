@@ -7,7 +7,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import com.example.power_email_client.R
 import com.example.power_email_client.core.domain.models.MailboxType
 import com.example.power_email_client.emails.presentation.models.NavigationItem
 
@@ -20,6 +22,7 @@ fun EmailsBottomNavigationBar(
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
         modifier = modifier
+            .testTag(stringResource(id = R.string.navigation_bottom))
     ) {
         for (navItem in NavigationItem.entries) {
             NavigationBarItem(

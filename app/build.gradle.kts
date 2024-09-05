@@ -18,6 +18,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments.put("clearPackageData", "true") // Revoke permissions and clear app state after each instrumented test
+
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -44,6 +46,9 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
+    }
+    testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
     packaging {
         resources {
@@ -93,7 +98,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.junit.ui.test)
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestUtil(libs.androidx.orchestrator)
 
     // Other
     debugImplementation(libs.androidx.ui.tooling)

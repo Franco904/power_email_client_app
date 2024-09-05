@@ -20,8 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.power_email_client.R
 import com.example.power_email_client.core.domain.models.MailboxType
 import com.example.power_email_client.emails.presentation.models.NavigationItem
 
@@ -58,6 +60,7 @@ fun EmailsNavigationDrawer(
             }
         },
         modifier = modifier
+            .testTag(stringResource(id = R.string.navigation_drawer))
     ) {
         content()
     }
