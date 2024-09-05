@@ -37,14 +37,10 @@ fun EmailDetailsTopAppBar(
             TopAppBarNavigationIcon(onUpNavigation)
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.onBackground,
+            containerColor = MaterialTheme.colorScheme.background,
         ),
         modifier = modifier
-            .padding(
-                top = 12.dp,
-                end = 12.dp,
-                bottom = 12.dp,
-            )
+            .padding(12.dp)
     )
 }
 
@@ -64,7 +60,8 @@ private fun TopAppBarTitle(email: EmailDetailsUiState?) {
         fontStyle = if (email?.subject == null) FontStyle.Italic else null,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.padding(start = 8.dp)
+        modifier = Modifier
+            .padding(start = 8.dp)
     )
 }
 
@@ -72,7 +69,8 @@ private fun TopAppBarTitle(email: EmailDetailsUiState?) {
 private fun TopAppBarNavigationIcon(onUpNavigation: () -> Boolean) {
     IconButton(
         colors = IconButtonDefaults.iconButtonColors(
-            containerColor = MaterialTheme.colorScheme.onBackground,
+            containerColor = MaterialTheme.colorScheme.onPrimary,
+//            disabledContainerColor = MaterialTheme.colorScheme.onBackground,
         ),
         onClick = {
             onUpNavigation().takeIf { wasSucceeded -> !wasSucceeded }?.run {
