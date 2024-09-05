@@ -77,7 +77,22 @@ object EmailsLocalProvider {
             sender = AccountsLocalProvider.findById(13L),
             recipients = listOf(AccountsLocalProvider.defaultAccount),
             subject = "Update to Your Itinerary",
-            body = "",
+            body = """
+                Dear [Recipient's Name],
+
+                I hope this message finds you well. I wanted to inform you of some recent updates to your itinerary. Please see the details below for the revised schedule:
+
+                Updated Itinerary:
+
+                Date: 2024/7/8
+                Time: 11:00
+                Location: County Wicklow
+                Event/Meeting: Planning meeting
+
+                Should you have any questions or require further adjustments, feel free to reach out. We apologize for any inconvenience this change may cause and appreciate your understanding.
+
+                Thank you for your attention, and we look forward to seeing you soon.
+            """.trimIndent(),
             createdAtTimestamp = 1723989073023L,
         ),
         Email(

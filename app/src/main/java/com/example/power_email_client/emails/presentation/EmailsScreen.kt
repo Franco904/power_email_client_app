@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -112,7 +113,6 @@ private fun EmailsContent(
             onEmailSelected = onEmailSelectedToDetailsCard,
             selectedEmail = selectedEmail,
             modifier = Modifier
-                .padding(top = 4.dp)
                 .weight(1f)
         )
         EmailDetailsCard(
@@ -159,7 +159,7 @@ private fun EmailsContent(
         ) {
             if (navigationComposableType == NavigationComposableType.NavigationRail) {
                 Surface(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxHeight()
                         .background(MaterialTheme.colorScheme.outlineVariant)
                         .offset(x = (-1).dp)
@@ -180,7 +180,7 @@ private fun EmailsContent(
                 onEmailSelected = { email -> onEmailSelectedToDetailsScreen(email.id) },
                 modifier = Modifier
                     .padding(
-                        top = innerPadding.calculateTopPadding() + 4.dp,
+                        top = innerPadding.calculateTopPadding(),
                         bottom = innerPadding.calculateBottomPadding(),
                     )
                     .weight(1f)
@@ -204,11 +204,12 @@ fun EmailsList(
         ),
         modifier = modifier
     ) {
-        items(
+        itemsIndexed(
             items = emails,
-            contentType = { EmailUiState::class },
-            key = { email -> email.id }
-        ) { email ->
+            contentType = { _, _ -> EmailUiState::class },
+            key = { _, email -> email.id }
+        ) { i, email ->
+            if (i == 0) Spacer(modifier = Modifier.height(4.dp))
             EmailItem(
                 email = email,
                 onEmailSelected = onEmailSelected,

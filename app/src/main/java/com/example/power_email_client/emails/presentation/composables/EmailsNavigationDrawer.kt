@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.power_email_client.core.domain.models.MailboxType
@@ -46,7 +47,9 @@ fun EmailsNavigationDrawer(
                     Spacer(modifier = Modifier.height(16.dp))
                     for (navItem in NavigationItem.entries) {
                         EmailsNavigationDrawerItem(
-                            navItem = navItem,
+                            navItemMailboxType = navItem.mailboxType,
+                            navItemIcon = navItem.icon,
+                            navItemText = navItem.text,
                             currentTabMailboxType = currentTabMailboxType,
                             onDrawerItemSelected = onDrawerItemSelected,
                         )
@@ -77,22 +80,26 @@ private fun EmailsNavigationDrawerHeader() {
 
 @Composable
 private fun EmailsNavigationDrawerItem(
-    navItem: NavigationItem,
+    navItemMailboxType: MailboxType,
+    navItemIcon: ImageVector,
+    navItemText: Int,
     currentTabMailboxType: MailboxType,
     onDrawerItemSelected: (MailboxType) -> Unit
 ) {
     NavigationDrawerItem(
-        selected = navItem.mailboxType == currentTabMailboxType,
+        selected = navItemMailboxType == currentTabMailboxType,
         onClick = {
-            onDrawerItemSelected(navItem.mailboxType)
+            if (navItemMailboxType != currentTabMailboxType) {
+                onDrawerItemSelected(navItemMailboxType)
+            }
         },
         icon = {
             Icon(
-                imageVector = navItem.icon,
-                contentDescription = stringResource(id = navItem.text),
+                imageVector = navItemIcon,
+                contentDescription = stringResource(id = navItemText),
             )
         },
-        label = { Text(stringResource(id = navItem.text)) },
+        label = { Text(stringResource(id = navItemText)) },
         colors = NavigationDrawerItemDefaults.colors(
             unselectedContainerColor = Color.Transparent,
         ),
