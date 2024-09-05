@@ -62,7 +62,7 @@ fun EmailsScreen(
     val currentTabMailboxType by viewModel.currentMailboxType.collectAsStateWithLifecycle()
     val selectedEmail by viewModel.selectedEmail.collectAsStateWithLifecycle()
 
-    val navigationComposableType = getNavigationComposableType(windowSize)
+    val navigationLayout = getNavigationComposableType(windowSize)
 
     if (navigationLayout == NavigationLayout.PermanentNavigationDrawer) {
         EmailsNavigationDrawer(
@@ -87,7 +87,7 @@ fun EmailsScreen(
         EmailsContent(
             emails = emails,
             currentTabMailboxType = currentTabMailboxType,
-            navigationComposableType = navigationComposableType,
+            navigationLayout = navigationLayout,
             onNavItemSelected = viewModel::onNavItemSelected,
             onEmailSelectedToDetailsScreen = onEmailSelectedToDetailsScreen,
             modifier = modifier
@@ -127,12 +127,12 @@ private fun EmailsContent(
 private fun EmailsContent(
     emails: List<EmailUiState>,
     currentTabMailboxType: MailboxType,
-    navigationComposableType: NavigationLayout,
+    navigationLayout: NavigationLayout,
     onNavItemSelected: (MailboxType) -> Unit,
     onEmailSelectedToDetailsScreen: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val showTopAppBar = navigationComposableType in listOf(
+    val showTopAppBar = navigationLayout in listOf(
         NavigationLayout.BottomNavigationBar,
         NavigationLayout.NavigationRail,
     )
@@ -142,7 +142,7 @@ private fun EmailsContent(
             if (showTopAppBar) EmailsTopAppBar()
         },
         bottomBar = {
-            if (navigationComposableType == NavigationLayout.BottomNavigationBar) {
+            if (navigationLayout == NavigationLayout.BottomNavigationBar) {
                 EmailsBottomNavigationBar(
                     currentTabMailboxType = currentTabMailboxType,
                     onBarItemSelected = onNavItemSelected,
@@ -155,7 +155,7 @@ private fun EmailsContent(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            if (navigationComposableType == NavigationLayout.NavigationRail) {
+            if (navigationLayout == NavigationLayout.NavigationRail) {
                 Surface(
                     modifier = Modifier
                         .fillMaxHeight()
