@@ -84,7 +84,6 @@ dependencies {
 
     // Serialization
     implementation(libs.kotlin.serialization.json)
-//    implementation(libs.androidx.material3.window.size.class.android)
 
     // Local Tests
     testImplementation(libs.junit.api)
