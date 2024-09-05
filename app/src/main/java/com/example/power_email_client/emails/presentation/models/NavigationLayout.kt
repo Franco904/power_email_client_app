@@ -1,6 +1,6 @@
 package com.example.power_email_client.emails.presentation.models
 
-enum class NavigationComposableType {
+enum class NavigationLayout {
     BottomNavigationBar,
     NavigationRail,
     PermanentNavigationDrawer,

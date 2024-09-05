@@ -49,7 +49,7 @@ import com.example.power_email_client.emails.presentation.composables.EmailsNavi
 import com.example.power_email_client.emails.presentation.composables.EmailsNavigationRail
 import com.example.power_email_client.emails.presentation.composables.EmailsTopAppBar
 import com.example.power_email_client.emails.presentation.models.EmailUiState
-import com.example.power_email_client.emails.presentation.models.NavigationComposableType
+import com.example.power_email_client.emails.presentation.models.NavigationLayout
 
 @Composable
 fun EmailsScreen(
@@ -64,7 +64,7 @@ fun EmailsScreen(
 
     val navigationComposableType = getNavigationComposableType(windowSize)
 
-    if (navigationComposableType == NavigationComposableType.PermanentNavigationDrawer) {
+    if (navigationLayout == NavigationLayout.PermanentNavigationDrawer) {
         EmailsNavigationDrawer(
             currentTabMailboxType = currentTabMailboxType,
             onDrawerItemSelected = { itemMailBoxType ->
@@ -127,14 +127,14 @@ private fun EmailsContent(
 private fun EmailsContent(
     emails: List<EmailUiState>,
     currentTabMailboxType: MailboxType,
-    navigationComposableType: NavigationComposableType,
+    navigationComposableType: NavigationLayout,
     onNavItemSelected: (MailboxType) -> Unit,
     onEmailSelectedToDetailsScreen: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val showTopAppBar = navigationComposableType in listOf(
-        NavigationComposableType.BottomNavigationBar,
-        NavigationComposableType.NavigationRail,
+        NavigationLayout.BottomNavigationBar,
+        NavigationLayout.NavigationRail,
     )
 
     Scaffold(
@@ -142,7 +142,7 @@ private fun EmailsContent(
             if (showTopAppBar) EmailsTopAppBar()
         },
         bottomBar = {
-            if (navigationComposableType == NavigationComposableType.BottomNavigationBar) {
+            if (navigationComposableType == NavigationLayout.BottomNavigationBar) {
                 EmailsBottomNavigationBar(
                     currentTabMailboxType = currentTabMailboxType,
                     onBarItemSelected = onNavItemSelected,
@@ -155,7 +155,7 @@ private fun EmailsContent(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            if (navigationComposableType == NavigationComposableType.NavigationRail) {
+            if (navigationComposableType == NavigationLayout.NavigationRail) {
                 Surface(
                     modifier = Modifier
                         .fillMaxHeight()
@@ -322,10 +322,10 @@ private fun EmailItemBody(email: EmailUiState) {
 }
 
 private fun getNavigationComposableType(windowSize: WindowWidthSizeClass) = when (windowSize) {
-    WindowWidthSizeClass.Compact -> NavigationComposableType.BottomNavigationBar
-    WindowWidthSizeClass.Medium -> NavigationComposableType.NavigationRail
-    WindowWidthSizeClass.Expanded -> NavigationComposableType.PermanentNavigationDrawer
-    else -> NavigationComposableType.BottomNavigationBar
+    WindowWidthSizeClass.Compact -> NavigationLayout.BottomNavigationBar
+    WindowWidthSizeClass.Medium -> NavigationLayout.NavigationRail
+    WindowWidthSizeClass.Expanded -> NavigationLayout.PermanentNavigationDrawer
+    else -> NavigationLayout.BottomNavigationBar
 }
 
 @Preview
