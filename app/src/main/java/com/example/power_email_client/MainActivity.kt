@@ -15,6 +15,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.power_email_client.core.presentation.theme.AppTheme
 import com.example.power_email_client.core.presentation.utils.alsoInvoke
+import com.example.power_email_client.core.presentation.utils.getEmailIdFromDetails
+import com.example.power_email_client.core.presentation.utils.setEmailIdFromDetails
 import com.example.power_email_client.emailDetails.presentation.EmailDetailsScreen
 import com.example.power_email_client.emailDetails.presentation.EmailDetailsViewModel
 import com.example.power_email_client.emails.presentation.EmailsScreen
@@ -43,21 +45,31 @@ class MainActivity : ComponentActivity() {
         navController: NavController,
         windowSize: WindowSizeClass,
     ) {
-        composable<Routes.Emails> {
+        composable<Routes.Emails> { backStackEntry ->
+            val selectedEmailId = backStackEntry.getEmailIdFromDetails()
+
             EmailsScreen(
-                viewModel = viewModel<EmailsViewModel>().alsoInvoke { init() },
+                viewModel = viewModel<EmailsViewModel>().alsoInvoke { init(selectedEmailId) },
                 onEmailSelectedToDetailsScreen = { emailId ->
                     navController.navigate(Routes.EmailDetails(emailId))
                 },
                 windowSize = windowSize.widthSizeClass,
             )
         }
-        composable<Routes.EmailDetails> { backstackEntry ->
-            val emailId = (backstackEntry.toRoute() as Routes.EmailDetails).emailId
+        composable<Routes.EmailDetails> { backStackEntry ->
+            val emailId = (backStackEntry.toRoute() as Routes.EmailDetails).emailId
 
             EmailDetailsScreen(
                 viewModel = viewModel<EmailDetailsViewModel>().alsoInvoke { init(emailId) },
-                onUpNavigation = navController::navigateUp,
+                onNavigateUp = {
+                    navController.previousBackStackEntry?.setEmailIdFromDetails(null)
+                    navController.navigateUp()
+                },
+                onWindowSizeLayoutChanged = {
+                    navController.previousBackStackEntry?.setEmailIdFromDetails(emailId)
+                    navController.navigateUp()
+                },
+                windowSize = windowSize.widthSizeClass,
             )
         }
     }

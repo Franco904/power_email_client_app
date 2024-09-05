@@ -10,11 +10,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class EmailsViewModel(
-    emailsRepository: EmailsRepository = EmailsRepositoryImpl(),
+    private val emailsRepository: EmailsRepository = EmailsRepositoryImpl(),
 ) : ViewModel() {
-    private val emailsByMailboxType: Map<MailboxType, List<EmailUiState>> = emailsRepository.findAll()
-        .map { EmailUiState.fromEmail(it) }
-        .groupBy { it.currentMailbox }
+    private val emailsByMailboxType: Map<MailboxType, List<EmailUiState>> =
+        emailsRepository.findAll()
+            .map { EmailUiState.fromEmail(it) }
+            .groupBy { it.currentMailbox }
 
     private val _currentEmails = MutableStateFlow<List<EmailUiState>>(emptyList())
     val currentEmails = _currentEmails.asStateFlow()
@@ -22,14 +23,30 @@ class EmailsViewModel(
     private val _currentMailboxType = MutableStateFlow(MailboxType.Inbox)
     val currentMailboxType = _currentMailboxType.asStateFlow()
 
-    fun init() {
+    private val _selectedEmail = MutableStateFlow<EmailUiState?>(null)
+    val selectedEmail = _selectedEmail.asStateFlow()
+
+    fun init(selectedEmailId: Long?) {
         _currentEmails.update {
             emailsByMailboxType[currentMailboxType.value] ?: emptyList()
+        }
+
+        onEmailSelected(selectedEmailId)
+    }
+
+    fun onEmailSelected(selectedEmailId: Long?) {
+        _selectedEmail.update { current ->
+            if (selectedEmailId == null || selectedEmailId == current?.id) null
+            else {
+                val email = emailsRepository.findById(selectedEmailId)
+                EmailUiState.fromEmail(email)
+            }
         }
     }
 
     fun onNavItemSelected(tabMailboxType: MailboxType) {
-        _currentMailboxType.update { tabMailboxType }
         _currentEmails.update { emailsByMailboxType[tabMailboxType] ?: emptyList() }
+        _currentMailboxType.update { tabMailboxType }
+        _selectedEmail.update { null }
     }
 }

@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -27,10 +26,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
@@ -62,33 +59,34 @@ fun EmailsScreen(
     windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
 ) {
     val emails by viewModel.currentEmails.collectAsStateWithLifecycle()
-    val mailboxType by viewModel.currentMailboxType.collectAsStateWithLifecycle()
+    val currentTabMailboxType by viewModel.currentMailboxType.collectAsStateWithLifecycle()
+    val selectedEmail by viewModel.selectedEmail.collectAsStateWithLifecycle()
 
     val navigationComposableType = getNavigationComposableType(windowSize)
 
     if (navigationComposableType == NavigationComposableType.PermanentNavigationDrawer) {
-        var selectedEmail: EmailUiState? by remember { mutableStateOf(null) }
-
         EmailsNavigationDrawer(
-            currentTabMailboxType = mailboxType,
+            currentTabMailboxType = currentTabMailboxType,
             onDrawerItemSelected = { itemMailBoxType ->
-                selectedEmail = null
+                if (itemMailBoxType == currentTabMailboxType) return@EmailsNavigationDrawer
                 viewModel.onNavItemSelected(itemMailBoxType)
             },
         ) {
             EmailsContent(
                 emails = emails,
                 selectedEmail = selectedEmail,
-                onEmailSelectedToDetailsCard = { email ->
-                    selectedEmail = if (selectedEmail == email) null else email
-                },
+                onEmailSelectedToDetailsCard = viewModel::onEmailSelected,
                 modifier = modifier
             )
         }
     } else {
+        LaunchedEffect(windowSize) {
+            if (selectedEmail != null) onEmailSelectedToDetailsScreen(selectedEmail!!.id)
+        }
+
         EmailsContent(
             emails = emails,
-            currentTabMailboxType = mailboxType,
+            currentTabMailboxType = currentTabMailboxType,
             navigationComposableType = navigationComposableType,
             onNavItemSelected = viewModel::onNavItemSelected,
             onEmailSelectedToDetailsScreen = onEmailSelectedToDetailsScreen,
@@ -101,7 +99,7 @@ fun EmailsScreen(
 private fun EmailsContent(
     emails: List<EmailUiState>,
     selectedEmail: EmailUiState?,
-    onEmailSelectedToDetailsCard: (EmailUiState) -> Unit,
+    onEmailSelectedToDetailsCard: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -177,7 +175,7 @@ private fun EmailsContent(
             }
             EmailsList(
                 emails = emails,
-                onEmailSelected = { email -> onEmailSelectedToDetailsScreen(email.id) },
+                onEmailSelected = { emailId -> onEmailSelectedToDetailsScreen(emailId) },
                 modifier = Modifier
                     .padding(
                         top = innerPadding.calculateTopPadding(),
@@ -192,7 +190,7 @@ private fun EmailsContent(
 @Composable
 fun EmailsList(
     emails: List<EmailUiState>,
-    onEmailSelected: (EmailUiState) -> Unit,
+    onEmailSelected: (Long) -> Unit,
     modifier: Modifier = Modifier,
     selectedEmail: EmailUiState? = null,
 ) {
@@ -225,7 +223,7 @@ fun EmailsList(
 @Composable
 private fun EmailItem(
     email: EmailUiState,
-    onEmailSelected: (EmailUiState) -> Unit,
+    onEmailSelected: (Long) -> Unit,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -235,7 +233,7 @@ private fun EmailItem(
 
     Card(
         colors = CardDefaults.cardColors(containerColor = cardColor),
-        onClick = { onEmailSelected(email) },
+        onClick = { onEmailSelected(email.id) },
         modifier = modifier
     ) {
         Column(

@@ -70,11 +70,10 @@ private fun TopAppBarNavigationIcon(onUpNavigation: () -> Boolean) {
     IconButton(
         colors = IconButtonDefaults.iconButtonColors(
             containerColor = MaterialTheme.colorScheme.onPrimary,
-//            disabledContainerColor = MaterialTheme.colorScheme.onBackground,
         ),
         onClick = {
             onUpNavigation().takeIf { wasSucceeded -> !wasSucceeded }?.run {
-                Log.e("EmailDetailsScreen", "Navigation up failed!")
+                Log.e("TopAppBarNavigationIcon", "Navigation up failed!")
             }
         }
     ) {

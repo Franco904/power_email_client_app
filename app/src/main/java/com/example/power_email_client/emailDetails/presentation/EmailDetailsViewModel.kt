@@ -15,7 +15,7 @@ class EmailDetailsViewModel(
     val email = _email.asStateFlow()
 
     fun init(emailId: Long) {
-        emailsRepository.findById(id = emailId)?.let { storedEmail ->
+        emailsRepository.findById(id = emailId).let { storedEmail ->
             _email.update { EmailDetailsUiState.fromEmail(storedEmail) }
         }
     }

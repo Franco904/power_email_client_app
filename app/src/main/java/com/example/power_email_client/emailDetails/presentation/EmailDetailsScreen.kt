@@ -1,6 +1,5 @@
 package com.example.power_email_client.emailDetails.presentation
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -18,21 +17,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MarkunreadMailbox
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,17 +52,24 @@ import com.example.power_email_client.emailDetails.presentation.models.EmailDeta
 fun EmailDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: EmailDetailsViewModel = viewModel(),
-    onUpNavigation: () -> Boolean = { true },
+    onNavigateUp: () -> Boolean = { true },
+    onWindowSizeLayoutChanged: () -> Unit = { },
+    windowSize: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
 ) {
     val email by viewModel.email.collectAsStateWithLifecycle()
 
-    BackHandler { onUpNavigation() }
+    BackHandler { onNavigateUp() }
+
+    LaunchedEffect(windowSize) {
+        val mustCloseDetailsScreen = windowSize == WindowWidthSizeClass.Expanded
+        if (mustCloseDetailsScreen) onWindowSizeLayoutChanged()
+    }
 
     Scaffold(
         topBar = {
             EmailDetailsTopAppBar(
                 email = email,
-                onUpNavigation = onUpNavigation,
+                onUpNavigation = onNavigateUp,
             )
         },
         modifier = modifier

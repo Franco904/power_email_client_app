@@ -165,5 +165,5 @@ object EmailsLocalProvider {
 
     fun findAll() = allEmails
 
-    fun findById(id: Long) = allEmails.find { email -> email.id == id }
+    fun findById(id: Long) = allEmails.find { email -> email.id == id } ?: allEmails.first()
 }

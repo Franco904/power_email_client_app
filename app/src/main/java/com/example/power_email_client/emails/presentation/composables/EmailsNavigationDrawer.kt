@@ -88,11 +88,7 @@ private fun EmailsNavigationDrawerItem(
 ) {
     NavigationDrawerItem(
         selected = navItemMailboxType == currentTabMailboxType,
-        onClick = {
-            if (navItemMailboxType != currentTabMailboxType) {
-                onDrawerItemSelected(navItemMailboxType)
-            }
-        },
+        onClick = { onDrawerItemSelected(navItemMailboxType) },
         icon = {
             Icon(
                 imageVector = navItemIcon,
