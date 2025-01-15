@@ -14,24 +14,24 @@ import com.example.power_email_client.emailDetails.presentation.EmailDetailsView
 import com.example.power_email_client.emails.presentation.EmailsScreen
 import com.example.power_email_client.emails.presentation.EmailsViewModel
 
-object RouteHandler {
-    fun NavGraphBuilder.routes(
+object DestinationsHandler {
+    fun NavGraphBuilder.destinations(
         navController: NavController,
         windowSize: WindowSizeClass,
     ) {
-        composable<Routes.Emails> { backStackEntry ->
+        composable<Destinations.Emails> { backStackEntry ->
             val selectedEmailId = backStackEntry.getEmailIdFromDetails()
 
             EmailsScreen(
                 viewModel = viewModel<EmailsViewModel>().alsoInvoke { init(selectedEmailId) },
                 onEmailSelectedToDetailsScreen = { emailId ->
-                    navController.navigate(Routes.EmailDetails(emailId))
+                    navController.navigate(Destinations.EmailDetails(emailId))
                 },
                 windowSize = windowSize.widthSizeClass,
             )
         }
-        composable<Routes.EmailDetails> { backStackEntry ->
-            val emailId = (backStackEntry.toRoute() as Routes.EmailDetails).emailId
+        composable<Destinations.EmailDetails> { backStackEntry ->
+            val emailId = (backStackEntry.toRoute() as Destinations.EmailDetails).emailId
 
             EmailDetailsScreen(
                 viewModel = viewModel<EmailDetailsViewModel>().alsoInvoke { init(emailId) },

@@ -2,7 +2,7 @@ package com.example.power_email_client
 
 import kotlinx.serialization.Serializable
 
-sealed interface Routes {
+sealed interface Destinations {
     @Serializable
     data object Emails
 

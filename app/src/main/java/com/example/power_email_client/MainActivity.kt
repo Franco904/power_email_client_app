@@ -7,7 +7,7 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.power_email_client.RouteHandler.routes
+import com.example.power_email_client.DestinationsHandler.destinations
 import com.example.power_email_client.core.presentation.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,8 +22,8 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = Routes.Emails,
-                    builder = { routes(navController, windowSize) },
+                    startDestination = Destinations.Emails,
+                    builder = { destinations(navController, windowSize) },
                 )
             }
         }
